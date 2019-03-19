@@ -19,12 +19,27 @@ class ListaTransacoesAdapter(
 ) : BaseAdapter() {
 
 
-    private val limiteDaCategoria = 14
+    private val LIMITE_DA_CATEGORIA = 14
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val viewCriada = LayoutInflater.from(context).inflate(R.layout.transacao_item, parent, false)
 
         val transacao = transacoes[position]
+
+        configuraCoresDaTransacao(transacao, viewCriada)
+
+        viewCriada.transacao_valor.text = transacao.valor.formataParaBrasileiro()
+        viewCriada.transacao_categoria.text = transacao.categoria.limitaEmAte(LIMITE_DA_CATEGORIA)
+        viewCriada.transacao_data.text = transacao.data.formataParaBrasileiro()
+        return viewCriada
+
+    }
+
+    private fun configuraCoresDaTransacao(
+        transacao: Transacao,
+        viewCriada: View
+    ) {
+
 
         if (transacao.tipo == Tipo.RECEITA) {
             viewCriada.transacao_valor
@@ -35,17 +50,6 @@ class ListaTransacoesAdapter(
                 .setTextColor(ContextCompat.getColor(context, R.color.despesa))
             viewCriada.transacao_icone.setBackgroundResource(R.drawable.icone_transacao_item_despesa)
         }
-
-
-
-
-        viewCriada.transacao_valor.text = transacao.valor.formataParaBrasileiro()
-        viewCriada.transacao_categoria.text = transacao.categoria.limitaEmAte(limiteDaCategoria)
-
-
-        viewCriada.transacao_data.text = transacao.data.formataParaBrasileiro()
-        return viewCriada
-
     }
 
 
