@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.ArrayAdapter
 import br.com.felipebertanha.financask.R
+import br.com.felipebertanha.financask.model.Tipo
 import br.com.felipebertanha.financask.model.Transacao
 import br.com.felipebertanha.financask.ui.adapter.ListaTransacoesAdapter
 import kotlinx.android.synthetic.main.activity_lista_transacoes.*
@@ -20,11 +21,19 @@ class ListaTransacoesActivity : AppCompatActivity() {
             Transacao(
                 BigDecimal(20.5),
                 "Comida",
+                Tipo.DESPESA,
                 Calendar.getInstance()
             ),
             Transacao(
                 BigDecimal(20.5),
-                "Comida",
+                "Economia",
+                Tipo.RECEITA,
+                Calendar.getInstance()
+            ),
+            Transacao(
+                BigDecimal(201.5),
+                "Almoço de fina de semana rs..",
+                Tipo.DESPESA,
                 Calendar.getInstance()
             )
         )
