@@ -16,9 +16,20 @@ class ListaTransacoesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_transacoes)
 
-        val lista: List<Transacao> = transacoesDeExemplo()
+        val transacoes: List<Transacao> = transacoesDeExemplo()
 
-        configuraLista(lista)
+
+        configuraResumo(transacoes)
+
+        configuraLista(transacoes)
+    }
+
+    private fun configuraResumo(transacoes: List<Transacao>) {
+        val view = window.decorView
+        val resumoView = ResumoView(this, view, transacoes)
+        resumoView.adicionaReceita()
+        resumoView.adicionaDespesa()
+        resumoView.adicionaTotal()
     }
 
     private fun configuraLista(lista: List<Transacao>) {
@@ -28,19 +39,19 @@ class ListaTransacoesActivity : AppCompatActivity() {
     private fun transacoesDeExemplo(): List<Transacao> {
         return listOf(
             Transacao(
-                BigDecimal(20.5),
-                "Comida",
-                Tipo.DESPESA,
-                Calendar.getInstance()
-            ),
-            Transacao(
-                BigDecimal(20.5),
+                BigDecimal(100),
                 "Economia",
                 Tipo.RECEITA,
                 Calendar.getInstance()
             ),
             Transacao(
-                BigDecimal(201.5),
+                BigDecimal(5),
+                "Comida",
+                Tipo.DESPESA,
+                Calendar.getInstance()
+            ),
+            Transacao(
+                BigDecimal(150),
                 "Almoço de fina de semana rs..",
                 Tipo.DESPESA,
                 Calendar.getInstance()

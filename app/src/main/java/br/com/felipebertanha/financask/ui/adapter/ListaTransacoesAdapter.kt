@@ -44,11 +44,15 @@ class ListaTransacoesAdapter(
         if (transacao.tipo == Tipo.RECEITA) {
             viewCriada.transacao_valor
                 .setTextColor(ContextCompat.getColor(context, R.color.receita))
-            viewCriada.transacao_icone.setBackgroundResource(R.drawable.icone_transacao_item_receita)
+            viewCriada
+                .transacao_icone
+                .setBackgroundResource(R.drawable.icone_transacao_item_receita)
         } else {
             viewCriada.transacao_valor
                 .setTextColor(ContextCompat.getColor(context, R.color.despesa))
-            viewCriada.transacao_icone.setBackgroundResource(R.drawable.icone_transacao_item_despesa)
+            viewCriada
+                .transacao_icone
+                .setBackgroundResource(R.drawable.icone_transacao_item_despesa)
         }
     }
 
