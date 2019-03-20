@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup
 import br.com.felipebertanha.financask.R
 import br.com.felipebertanha.financask.delegate.TransacaoDelegate
+import br.com.felipebertanha.financask.model.Tipo
 import br.com.felipebertanha.financask.model.Transacao
 import br.com.felipebertanha.financask.ui.adapter.ListaTransacoesAdapter
 import br.com.felipebertanha.financask.ui.dialog.AdicionaTransacaoDialog
@@ -19,24 +20,32 @@ class ListaTransacoesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_lista_transacoes)
 
         configuraResumo()
-
         configuraLista()
+        configuraFab()
+    }
 
+    private fun configuraFab() {
         lista_transacoes_adiciona_receita
             .setOnClickListener {
-                AdicionaTransacaoDialog(window.decorView as ViewGroup, this)
-                    .configuraDialog(object : TransacaoDelegate {
-                        override fun delegate(transacao: Transacao) {
-                            atualizaTransacoes(transacao)
-                            lista_transacoes_adiciona_menu.close(true)
-                        }
+                chamaDialogDeAdicao(Tipo.RECEITA)
+            }
 
-                    })
-
+        lista_transacoes_adiciona_despesa
+            .setOnClickListener {
+                chamaDialogDeAdicao(Tipo.DESPESA)
             }
     }
 
+    private fun chamaDialogDeAdicao(tipo: Tipo) {
+        AdicionaTransacaoDialog(window.decorView as ViewGroup, this)
+            .chama(Tipo.RECEITA, object : TransacaoDelegate {
+                override fun delegate(transacao: Transacao) {
+                    atualizaTransacoes(transacao)
+                    lista_transacoes_adiciona_menu.close(true)
+                }
 
+            })
+    }
 
     private fun atualizaTransacoes(transacao: Transacao) {
         transacoes.add(transacao)
