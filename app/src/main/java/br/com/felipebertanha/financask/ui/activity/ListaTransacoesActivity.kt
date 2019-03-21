@@ -2,6 +2,7 @@ package br.com.felipebertanha.financask.ui.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.view.ViewGroup
 import br.com.felipebertanha.financask.R
 import br.com.felipebertanha.financask.delegate.TransacaoDelegate
@@ -16,9 +17,13 @@ class ListaTransacoesActivity : AppCompatActivity() {
 
     private val transacoes: MutableList<Transacao> = mutableListOf()
 
+    private var viewDaActivity: View? = null
+
     override fun onCreate(savedInstanceState: Bundle?): Unit {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_transacoes)
+
+        //viewDaActivity = window.decorView
 
         configuraResumo()
         configuraLista()
@@ -38,8 +43,8 @@ class ListaTransacoesActivity : AppCompatActivity() {
     }
 
     private fun chamaDialogDeAdicao(tipo: Tipo) {
-        AdicionaTransacaoDialog(window.decorView as ViewGroup, this)
-            .chama(Tipo.RECEITA, object : TransacaoDelegate {
+        AdicionaTransacaoDialog(viewDaActivity as ViewGroup, this)
+            .chama(tipo, object : TransacaoDelegate {
                 override fun delegate(transacao: Transacao) {
                     adiciona(transacao)
                     lista_transacoes_adiciona_menu.close(true)
@@ -60,8 +65,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
     }
 
     private fun configuraResumo() {
-        val view = window.decorView
-        val resumoView = ResumoView(this, view, transacoes)
+        val resumoView = ResumoView(this, viewDaActivity, transacoes)
         resumoView.atualiza()
     }
 
@@ -69,7 +73,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
         val listaTransacoesAdapter = ListaTransacoesAdapter(this, transacoes)
         with(lista_transacoes_listview) {
             adapter = listaTransacoesAdapter
-            setOnItemClickListener { parent, view, position, id ->
+            setOnItemClickListener { _, _, position, _ ->
                 val transacao = transacoes[position]
                 chamaDialogDeAlteracao(transacao, position)
             }
@@ -77,7 +81,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
     }
 
     private fun chamaDialogDeAlteracao(transacao: Transacao, position: Int) {
-        AlteraTransacaoDialog(window.decorView as ViewGroup, this)
+        AlteraTransacaoDialog(viewDaActivity as ViewGroup, this)
             .chama(transacao, object : TransacaoDelegate {
                 override fun delegate(transacao: Transacao) {
                     altera(transacao, position)
