@@ -9,6 +9,7 @@ import br.com.felipebertanha.financask.model.Tipo
 import br.com.felipebertanha.financask.model.Transacao
 import br.com.felipebertanha.financask.ui.adapter.ListaTransacoesAdapter
 import br.com.felipebertanha.financask.ui.dialog.AdicionaTransacaoDialog
+import br.com.felipebertanha.financask.ui.dialog.AlteraTransacaoDialog
 import kotlinx.android.synthetic.main.activity_lista_transacoes.*
 
 class ListaTransacoesActivity : AppCompatActivity() {
@@ -40,15 +41,20 @@ class ListaTransacoesActivity : AppCompatActivity() {
         AdicionaTransacaoDialog(window.decorView as ViewGroup, this)
             .chama(Tipo.RECEITA, object : TransacaoDelegate {
                 override fun delegate(transacao: Transacao) {
-                    atualizaTransacoes(transacao)
+                    adiciona(transacao)
                     lista_transacoes_adiciona_menu.close(true)
                 }
 
             })
     }
 
-    private fun atualizaTransacoes(transacao: Transacao) {
+    private fun adiciona(transacao: Transacao) {
         transacoes.add(transacao)
+        atualizaTransacoes()
+    }
+
+    private fun atualizaTransacoes() {
+
         configuraLista()
         configuraResumo()
     }
@@ -60,7 +66,28 @@ class ListaTransacoesActivity : AppCompatActivity() {
     }
 
     private fun configuraLista() {
-        lista_transacoes_listview.adapter = ListaTransacoesAdapter(this, transacoes)
+        val listaTransacoesAdapter = ListaTransacoesAdapter(this, transacoes)
+        with(lista_transacoes_listview) {
+            adapter = listaTransacoesAdapter
+            setOnItemClickListener { parent, view, position, id ->
+                val transacao = transacoes[position]
+                chamaDialogDeAlteracao(transacao, position)
+            }
+        }
+    }
+
+    private fun chamaDialogDeAlteracao(transacao: Transacao, position: Int) {
+        AlteraTransacaoDialog(window.decorView as ViewGroup, this)
+            .chama(transacao, object : TransacaoDelegate {
+                override fun delegate(transacao: Transacao) {
+                    altera(transacao, position)
+                }
+            })
+    }
+
+    private fun altera(transacao: Transacao, position: Int) {
+        transacoes[position] = transacao
+        atualizaTransacoes()
     }
 
 
