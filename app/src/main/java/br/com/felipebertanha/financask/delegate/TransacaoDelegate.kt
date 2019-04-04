@@ -1,7 +1,8 @@
-package br.com.felipebertanha.financask.delegate
-
-import br.com.felipebertanha.financask.model.Transacao
-
-interface TransacaoDelegate {
-    fun delegate(transacao: Transacao)
-}
+// Substituido por higher order function
+// package br.com.felipebertanha.financask.delegate
+//
+//import br.com.felipebertanha.financask.model.Transacao
+//
+//interface TransacaoDelegate {
+//    fun delegate(transacao: Transacao)
+//}

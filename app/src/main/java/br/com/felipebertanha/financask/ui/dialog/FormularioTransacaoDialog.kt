@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import br.com.felipebertanha.financask.R
-import br.com.felipebertanha.financask.delegate.TransacaoDelegate
 import br.com.felipebertanha.financask.extension.converteParaCalendar
 import br.com.felipebertanha.financask.extension.formataParaBrasileiro
 import br.com.felipebertanha.financask.model.Tipo
@@ -29,14 +28,14 @@ abstract class FormularioTransacaoDialog(
     protected abstract val tituloBotaoPositivo: String
 
 
-    fun chama(tipo: Tipo, transacaoDelegate: TransacaoDelegate) {
+    fun chama(tipo: Tipo, delegate: (transacao: Transacao) -> Unit) {
         configuraCampoData()
         configuraCampoCategoria(tipo)
-        configuraFormulario(tipo, transacaoDelegate)
+        configuraFormulario(tipo, delegate)
     }
 
 
-    fun configuraFormulario(tipo: Tipo, transacaoDelegate: TransacaoDelegate) {
+    fun configuraFormulario(tipo: Tipo, delegate: (transacao: Transacao) -> Unit) {
         val titulo: Int = tituloPor(tipo)
         AlertDialog.Builder(context)
             .setTitle(titulo)
@@ -52,7 +51,7 @@ abstract class FormularioTransacaoDialog(
                 val data = dataEmTexto.converteParaCalendar()
                 val transacao = Transacao(valor, categoriaEmTexto, tipo, data)
 
-                transacaoDelegate.delegate(transacao)
+                delegate(transacao)
             }
             .setNegativeButton("Cancelar", null)
             .show()

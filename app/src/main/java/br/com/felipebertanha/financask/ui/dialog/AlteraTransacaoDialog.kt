@@ -3,7 +3,6 @@ package br.com.felipebertanha.financask.ui.dialog
 import android.content.Context
 import android.view.ViewGroup
 import br.com.felipebertanha.financask.R
-import br.com.felipebertanha.financask.delegate.TransacaoDelegate
 import br.com.felipebertanha.financask.extension.formataParaBrasileiro
 import br.com.felipebertanha.financask.model.Tipo
 import br.com.felipebertanha.financask.model.Transacao
@@ -24,7 +23,7 @@ class AlteraTransacaoDialog(
     }
 
 
-    fun chama(transacao: Transacao, transacaoDelegate: TransacaoDelegate) {
+    fun chama(transacao: Transacao, transacaoDelegate: (transacao: Transacao) -> Unit) {
         super.chama(transacao.tipo, transacaoDelegate)
 
         inicializaCampos(transacao)
